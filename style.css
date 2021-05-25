@@ -96,7 +96,12 @@
     color: #43484D;
     font-weight: 400;
   }
-   
+  .total-price{
+    display: none;
+  }
+  .subtotal{
+margin-top:30px;
+  }   
   .description span:first-child {
     margin-bottom: 5px;
   }

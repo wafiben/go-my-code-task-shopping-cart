@@ -1,89 +1,89 @@
+var likeButtons = document.querySelectorAll(".like-btn");
+var miusButtons = document.querySelectorAll(".minus-btn");
+var plusButtons = document.querySelectorAll(".plus-btn");
+var pricesItems = document.querySelectorAll(".total-price");
+var totalPrice = document.querySelector("#total");
+var deleButtons = document.querySelectorAll(".delete-btn");
 
-
-var likeButtons=document.querySelectorAll('.like-btn');
-var miusButtons=document.querySelectorAll('.minus-btn');
-var plusButtons=document.querySelectorAll('.plus-btn');
-var pricesItems=document.querySelectorAll('.total-price');
-var sumOfItems=document.querySelectorAll('.total');
-console.log(sumOfItems);
-console.log(pricesItems)
-console.log(plusButtons);
-console.log(miusButtons);
-console.log(likeButtons);
 //like items
-for(var i=0;i<likeButtons.length;i++)
-{
-    likeButtons[i].addEventListener('click',function()
-    {
-        this.classList.toggle("is-active");
-        console.log(this);
-    })
+for (var i = 0; i < likeButtons.length; i++) {
+  likeButtons[i].addEventListener("click", function () {
+    this.classList.toggle("is-active");
+    console.log(this);
+  });
 }
 //deccrease items
-for(var i=0;i<miusButtons.length;i++)
-{
-    miusButtons[i].addEventListener('click',function(event)
-    {
-     event.preventDefault();
-     var valueInput=event.target.parentElement.previousElementSibling;
-     var priceOfitem=event.target.parentElement.parentElement.nextElementSibling
-     var priceWithoutDollars= priceOfitem.innerText.substring(1);//without dollars
-     var valueWithoutDollarsToInt=parseInt( priceWithoutDollars);
-     const priceofBegin=valueWithoutDollarsToInt;
-     console.log(priceofBegin);
+for (var i = 0; i < miusButtons.length; i++) {
+  miusButtons[i].addEventListener("click", function (event) {
+    event.preventDefault();
+    var valueInput = "";
+    if (event.target.nodeName === "IMG") {
+      valueInput = event.target.parentElement.previousElementSibling;
+      var priceOfitem =
+        event.target.parentElement.parentElement.nextElementSibling
+          .nextElementSibling;
 
-     var value=parseInt(valueInput.value);
-     if(value>1)
-     {
-         value=value-1;
-     }
-     valueInput.setAttribute('value',value)
-        var newValueOfitem=valueInput.value*priceofBegin;
-        console.log(valueInput);
-        console.log(priceOfitem);
-        console.log(newValueOfitem);
-     
-    })
+      var subtotalItem =
+        event.target.parentElement.parentElement.nextElementSibling;
+
+      var value = parseInt(valueInput.value);
+      if (value > 1) {
+        value = value - 1;
+        totalPrice.textContent =
+          "$" +
+          (parseInt(totalPrice.textContent.replace("$", "")) -
+            parseInt(priceOfitem.textContent.replace("$", "")));
+      }
+      valueInput.setAttribute("value", value);
+
+      subtotalItem.textContent =
+        "$" + value * parseInt(priceOfitem.textContent.replace("$", ""));
+    }
+  });
 }
-//increase items 
+//increase items
 
-for (var i=0;i<plusButtons.length;i++)
-{
-    plusButtons[i].addEventListener('click',function(event)
-    { 
-        event.preventDefault();
-        var valueInput=event.target.parentElement.nextElementSibling;
-        var priceOfitem=event.target.parentElement.parentElement.nextElementSibling
-        var priceWithoutDollars= priceOfitem.innerText.substring(1);//without dollars
-        var valueWithoutDollarsToInt=parseInt( priceWithoutDollars);
-        const priceofBegin=valueWithoutDollarsToInt;
-        console.log(priceofBegin);
-        
-        //var price
-        var value=parseInt(valueInput.value);
-        if(value>=1)
-        {
-            value=value+1;
-        }
-       
-        //valueInput.val()=value;
-        valueInput.setAttribute('value',value)
-        var newValueOfitem=valueInput.value*priceofBegin;
-        var sumOfarticles=+newValueOfitem;
-        var sumOfItemswithoutDollars=sumOfItems.innerText.substring(1);
-         console.log(sumOfItemswithoutDollars)
+for (var i = 0; i < plusButtons.length; i++) {
+  plusButtons[i].addEventListener("click", function (event) {
+    var valueInput = "";
+    event.preventDefault();
+    if (event.target.nodeName === "IMG") {
+      valueInput = event.target.parentElement.nextElementSibling;
 
-        console.log( sumOfarticles);
-        console.log(valueInput);
-        console.log(priceOfitem);
-        console.log(newValueOfitem);
-       // console.log(newValueOfitem.toString());
-        //priceOfitem.innerHTML=newValueOfitem;
-        
-         
-       
-        
-        
+      var priceOfitem =
+        event.target.parentElement.parentElement.nextElementSibling
+          .nextElementSibling;
+      console.log(priceOfitem.textContent);
+      var subtotalItem =
+        event.target.parentElement.parentElement.nextElementSibling;
+      /*
+       */
+      var value = parseInt(valueInput.value);
+      if (value >= 1) {
+        value = value + 1;
+      }
 
-    })
+      valueInput.setAttribute("value", value);
+      subtotalItem.textContent =
+        "$" + value * parseInt(priceOfitem.textContent.replace("$", ""));
+      totalPrice.textContent =
+        "$" +
+        (parseInt(totalPrice.textContent.replace("$", "")) +
+          parseInt(priceOfitem.textContent.replace("$", "")));
+    }
+  });
+}
+//total
+for (var i = 0; i < deleButtons.length; i++) {
+  deleButtons[i].addEventListener("click", function (event) {
+    var subTotal =
+      event.target.parentElement.parentElement.parentElement.getElementsByClassName(
+        "subtotal"
+      )[0];
+    totalPrice.textContent =
+      "$" +
+      (parseInt(totalPrice.textContent.replace("$", "")) -
+        parseInt(subTotal.textContent.replace("$", "")));
+    event.target.parentElement.parentElement.parentElement.remove();
+  });
 }
